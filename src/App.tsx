@@ -132,13 +132,12 @@ export default function App() {
 
       {/* Main Container / Android Device Mockup Frame */}
       <div
-        {/* Container (Main Wrapper) */}
-<div className="w-full h-screen flex flex-col transition-all duration-300 relative bg-[#030712]">
-
-      >
-        {/* Android Status Bar (Always on mobile mockup or fullscreen) */}
-        <AndroidStatusBar />
-
+        {/* Main Container / Android Device Mockup Frame */}
+<div>
+  {/* Container (Main Wrapper) */}
+  <div className="w-full h-screen flex flex-col transition-all duration-300 relative bg-[#030712]">
+    {/* Android Status Bar (Always on mobile mockup or fullscreen) */}
+    <AndroidStatusBar />
         {/* Nexora Header */}
         <Header
           viewMode={viewMode}
