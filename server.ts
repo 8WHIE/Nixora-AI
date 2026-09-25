@@ -1,4 +1,5 @@
 import express, { Request, Response } from 'express';
+import cors from 'cors';
 import { GoogleGenAI } from '@google/genai';
 import dotenv from 'dotenv';
 import path from 'path';
@@ -10,13 +11,68 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
 
-app.use(express.json({ limit: '15mb' }));
+const PORT = process.env.PORT
+  ? parseInt(process.env.PORT, 10)
+  : 3000;
 
-// Shared Gemini Client
+/* =========================================================
+   CORS
+   ========================================================= */
+
+const allowedOrigins = [
+  'https://8whie.github.io',
+  'http://localhost:5173',
+  'http://localhost:3000',
+];
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      // Allow requests without an Origin header
+      // such as server-to-server requests.
+      if (!origin) {
+        callback(null, true);
+        return;
+      }
+
+      if (allowedOrigins.includes(origin)) {
+        callback(null, true);
+        return;
+      }
+
+      callback(new Error('CORS origin not allowed'));
+    },
+    methods: ['GET', 'POST', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: false,
+  })
+);
+
+/* =========================================================
+   Body Parser
+   ========================================================= */
+
+app.use(
+  express.json({
+    limit: '15mb',
+  })
+);
+
+/* =========================================================
+   Gemini Client
+   ========================================================= */
+
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+
+if (!GEMINI_API_KEY) {
+  console.warn(
+    '⚠️ GEMINI_API_KEY is not configured. Gemini requests will fail.'
+  );
+}
+
 const ai = new GoogleGenAI({
-  apiKey: process.env.GEMINI_API_KEY,
+  apiKey: GEMINI_API_KEY,
   httpOptions: {
     headers: {
       'User-Agent': 'aistudio-build',
@@ -24,30 +80,89 @@ const ai = new GoogleGenAI({
   },
 });
 
-const NEXORA_SYSTEM_INSTRUCTION = `You are Nexora AI, a world-class coding and productivity super-assistant.
+/* =========================================================
+   Nexora AI System Instruction
+   ========================================================= */
+
+const NEXORA_SYSTEM_INSTRUCTION = `
+You are Nexora AI, a world-class coding and productivity
+super-assistant.
+
 Tagline: "Intelligence Without Limits".
-You specialize in software engineering, mobile development (especially Android with Kotlin, Jetpack Compose, Gradle, Coroutines), full-stack web development (React, TypeScript, Node.js, Python), DSA (Data Structures & Algorithms), system architecture, and code debugging.
 
-Your guidelines:
-1. Always deliver pristine, production-ready, clean, well-documented code.
-2. When answering coding queries, provide clear explanations, code blocks with proper syntax highlighting tags (e.g. \`\`\`kotlin, \`\`\`python, \`\`\`typescript), and time/space complexity analysis when relevant.
-3. Be proactive: suggest optimal practices, performance hints, and edge cases.
-4. When asked about Android, write modern Jetpack Compose UI with Material 3 styling and modern architecture (MVVM, StateFlow, Repository pattern).
-5. Maintain a professional, futuristic, inspiring, and concise tone.`;
+You specialize in:
 
-// Health check endpoint
+- Software engineering
+- Android development
+- Kotlin
+- Jetpack Compose
+- Material 3
+- Gradle
+- Coroutines
+- StateFlow
+- MVVM
+- Repository architecture
+- Full-stack web development
+- React
+- TypeScript
+- Node.js
+- Python
+- Java
+- C++
+- SQL
+- Rust
+- Go
+- Data Structures & Algorithms
+- System architecture
+- Debugging
+- Performance optimization
+- Code generation
+
+Guidelines:
+
+1. Always provide clean, production-ready code.
+
+2. When answering coding questions, explain the solution clearly.
+
+3. Use proper Markdown code blocks with language tags.
+
+4. When relevant, include time and space complexity.
+
+5. Suggest performance improvements and edge cases when useful.
+
+6. For Android development, prefer modern Jetpack Compose,
+   Material 3 and modern architecture such as MVVM,
+   StateFlow and Repository patterns.
+
+7. Avoid unnecessary complexity.
+
+8. Maintain a professional, futuristic and concise tone.
+
+9. Never expose API keys, secrets or private credentials.
+
+10. If the user provides an error, first identify the likely
+    root cause and then provide a practical fix.
+`;
+
+/* =========================================================
+   Health Check
+   ========================================================= */
+
 app.get('/api/health', (_req: Request, res: Response) => {
   res.json({
     status: 'online',
     app: 'Nexora AI',
     tagline: 'Intelligence Without Limits',
-    hasApiKey: !!process.env.GEMINI_API_KEY,
+    hasApiKey: Boolean(process.env.GEMINI_API_KEY),
     defaultModel: 'gemini-3.8-flash',
     timestamp: new Date().toISOString(),
   });
 });
 
-// Models metadata
+/* =========================================================
+   Models
+   ========================================================= */
+
 app.get('/api/models', (_req: Request, res: Response) => {
   res.json({
     models: [
@@ -55,15 +170,17 @@ app.get('/api/models', (_req: Request, res: Response) => {
         id: 'gemini-3.8-flash',
         name: 'Gemini 3.8 Flash',
         badge: 'Recommended',
-        description: 'Ultra-fast, high-efficiency model for code generation, chat, and instant analysis.',
-        speed: 'Super Fast (~150ms)',
+        description:
+          'Fast model for coding, chat and analysis.',
+        speed: 'Super Fast',
         context: '1M tokens',
       },
       {
         id: 'gemini-3.1-pro-preview',
         name: 'Gemini 3.1 Pro Preview',
         badge: 'Deep Reasoning',
-        description: 'Flagship reasoning model for complex architecture, deep bug hunting, and algorithms.',
+        description:
+          'Reasoning-focused model for architecture and complex debugging.',
         speed: 'Balanced',
         context: '2M tokens',
       },
@@ -71,24 +188,38 @@ app.get('/api/models', (_req: Request, res: Response) => {
         id: 'gemini-3.1-flash-lite',
         name: 'Gemini 3.1 Flash Lite',
         badge: 'Lightweight',
-        description: 'Ultra-lightweight and fastest response times for rapid queries and snippets.',
-        speed: 'Instantaneous',
+        description:
+          'Lightweight model for fast responses and snippets.',
+        speed: 'Fast',
         context: '500K tokens',
       },
     ],
   });
 });
 
-// Helper for model calling with fallback
-async function callGeminiContent(model: string, contents: any, config?: any) {
+/* =========================================================
+   Gemini Helper
+   ========================================================= */
+
+async function callGeminiContent(
+  model: string,
+  contents: any,
+  config?: any
+) {
+  const primaryModel = model || 'gemini-3.8-flash';
+
   try {
     return await ai.models.generateContent({
-      model: model || 'gemini-3.8-flash',
+      model: primaryModel,
       contents,
       config,
     });
-  } catch (err: any) {
-    console.warn(`Primary model ${model} failed, attempting fallback to gemini-3.1-flash-lite...`, err?.message);
+  } catch (primaryError: any) {
+    console.warn(
+      `Primary model ${primaryModel} failed. Trying fallback model.`,
+      primaryError?.message
+    );
+
     return await ai.models.generateContent({
       model: 'gemini-3.1-flash-lite',
       contents,
@@ -97,198 +228,441 @@ async function callGeminiContent(model: string, contents: any, config?: any) {
   }
 }
 
-// Chat stream with SSE
-app.post('/api/chat/stream', async (req: Request, res: Response) => {
-  const { messages, model, systemPrompt, temperature } = req.body;
+/* =========================================================
+   Chat Streaming API
+   ========================================================= */
 
-  if (!messages || !Array.isArray(messages)) {
-    res.status(400).json({ error: 'Messages array is required' });
-    return;
-  }
+app.post(
+  '/api/chat/stream',
+  async (req: Request, res: Response) => {
+    const {
+      messages,
+      model,
+      systemPrompt,
+      temperature,
+    } = req.body;
 
-  // Set SSE headers
-  res.setHeader('Content-Type', 'text/event-stream');
-  res.setHeader('Cache-Control', 'no-cache');
-  res.setHeader('Connection', 'keep-alive');
-  res.flushHeaders?.();
-
-  const formattedContents = messages.map((m: { role: string; content: string }) => ({
-    role: m.role === 'user' ? 'user' : 'model',
-    parts: [{ text: m.content }],
-  }));
-
-  const primaryModel = model || 'gemini-3.8-flash';
-
-  try {
-    let responseStream;
-    try {
-      responseStream = await ai.models.generateContentStream({
-        model: primaryModel,
-        contents: formattedContents,
-        config: {
-          systemInstruction: systemPrompt || NEXORA_SYSTEM_INSTRUCTION,
-          temperature: typeof temperature === 'number' ? temperature : 0.7,
-        },
+    if (!Array.isArray(messages)) {
+      res.status(400).json({
+        error: 'Messages array is required',
       });
-    } catch (streamErr: any) {
-      console.warn(`Stream with ${primaryModel} failed, trying gemini-3.1-flash-lite...`, streamErr?.message);
-      responseStream = await ai.models.generateContentStream({
-        model: 'gemini-3.1-flash-lite',
-        contents: formattedContents,
-        config: {
-          systemInstruction: systemPrompt || NEXORA_SYSTEM_INSTRUCTION,
-          temperature: typeof temperature === 'number' ? temperature : 0.7,
-        },
-      });
+
+      return;
     }
 
-    for await (const chunk of responseStream) {
-      const text = chunk.text;
-      if (text) {
-        res.write(`data: ${JSON.stringify({ text })}\n\n`);
+    if (!process.env.GEMINI_API_KEY) {
+      res.status(500).json({
+        error: 'GEMINI_API_KEY is not configured on the server.',
+      });
+
+      return;
+    }
+
+    /* -------------------------------------------------------
+       SSE Headers
+       ------------------------------------------------------- */
+
+    res.status(200);
+
+    res.setHeader(
+      'Content-Type',
+      'text/event-stream; charset=utf-8'
+    );
+
+    res.setHeader(
+      'Cache-Control',
+      'no-cache, no-transform'
+    );
+
+    res.setHeader('Connection', 'keep-alive');
+
+    res.setHeader(
+      'X-Accel-Buffering',
+      'no'
+    );
+
+    res.flushHeaders?.();
+
+    /* -------------------------------------------------------
+       Client Disconnect
+       ------------------------------------------------------- */
+
+    let clientDisconnected = false;
+
+    req.on('close', () => {
+      clientDisconnected = true;
+    });
+
+    /* -------------------------------------------------------
+       Format Messages
+       ------------------------------------------------------- */
+
+    const formattedContents = messages.map(
+      (message: {
+        role: string;
+        content: string;
+      }) => ({
+        role:
+          message.role === 'user'
+            ? 'user'
+            : 'model',
+
+        parts: [
+          {
+            text: String(message.content ?? ''),
+          },
+        ],
+      })
+    );
+
+    const primaryModel =
+      model || 'gemini-3.8-flash';
+
+    const finalTemperature =
+      typeof temperature === 'number'
+        ? temperature
+        : 0.7;
+
+    try {
+      let responseStream;
+
+      /* -----------------------------------------------------
+         Primary Model
+         ----------------------------------------------------- */
+
+      try {
+        responseStream =
+          await ai.models.generateContentStream({
+            model: primaryModel,
+
+            contents: formattedContents,
+
+            config: {
+              systemInstruction:
+                systemPrompt ||
+                NEXORA_SYSTEM_INSTRUCTION,
+
+              temperature: finalTemperature,
+            },
+          });
+      } catch (primaryStreamError: any) {
+        console.warn(
+          `Streaming with ${primaryModel} failed. Trying fallback.`,
+          primaryStreamError?.message
+        );
+
+        /* ---------------------------------------------------
+           Fallback Model
+           --------------------------------------------------- */
+
+        responseStream =
+          await ai.models.generateContentStream({
+            model: 'gemini-3.1-flash-lite',
+
+            contents: formattedContents,
+
+            config: {
+              systemInstruction:
+                systemPrompt ||
+                NEXORA_SYSTEM_INSTRUCTION,
+
+              temperature: finalTemperature,
+            },
+          });
+      }
+
+      /* -----------------------------------------------------
+         Stream Response
+         ----------------------------------------------------- */
+
+      for await (const chunk of responseStream) {
+        if (clientDisconnected) {
+          break;
+        }
+
+        const text = chunk.text;
+
+        if (text) {
+          res.write(
+            `data: ${JSON.stringify({
+              text,
+            })}\n\n`
+          );
+        }
+      }
+
+      if (!clientDisconnected) {
+        res.write('data: [DONE]\n\n');
+        res.end();
+      }
+    } catch (error: any) {
+      console.error(
+        'Gemini Stream Error:',
+        error
+      );
+
+      if (!clientDisconnected) {
+        const errorMessage =
+          error?.message ||
+          'Error communicating with Gemini model';
+
+        res.write(
+          `data: ${JSON.stringify({
+            error: errorMessage,
+          })}\n\n`
+        );
+
+        res.write('data: [DONE]\n\n');
+        res.end();
       }
     }
-
-    res.write(`data: [DONE]\n\n`);
-    res.end();
-  } catch (error: any) {
-    console.error('Gemini Stream Error:', error);
-    const errorMessage = error?.message || 'Error communicating with Gemini model';
-    res.write(`data: ${JSON.stringify({ error: errorMessage })}\n\n`);
-    res.write(`data: [DONE]\n\n`);
-    res.end();
   }
-});
+);
 
-// Code Debugger and Auto-Fixer
-app.post('/api/code/debug', async (req: Request, res: Response) => {
-  const { code, language, errorDescription } = req.body;
+/* =========================================================
+   Code Debugger
+   ========================================================= */
 
-  if (!code) {
-    res.status(400).json({ error: 'Code is required for debugging' });
-    return;
-  }
+app.post(
+  '/api/code/debug',
+  async (req: Request, res: Response) => {
+    const {
+      code,
+      language,
+      errorDescription,
+    } = req.body;
 
-  try {
-    const prompt = `Analyze and fix the following ${language || 'code'}.
-Error or Issue Description: ${errorDescription || 'Not specified - identify logical errors, syntax issues, edge cases, memory leaks, and performance bottlenecks.'}
+    if (!code) {
+      res.status(400).json({
+        error: 'Code is required for debugging',
+      });
+
+      return;
+    }
+
+    try {
+      const prompt = `
+Analyze and fix the following ${language || 'code'}.
+
+Error or Issue Description:
+${
+  errorDescription ||
+  'Identify syntax errors, logical errors, edge cases, memory leaks and performance issues.'
+}
 
 Code:
+
 \`\`\`${language || ''}
 ${code}
 \`\`\`
 
-Return a valid JSON object conforming exactly to:
+Return a valid JSON object:
+
 {
   "fixedCode": string,
   "bugType": string,
   "explanation": string,
   "diffSummary": string[],
   "performanceTip": string
-}`;
+}
+`;
 
-    const response = await callGeminiContent(
-      'gemini-3.8-flash',
-      prompt,
-      { responseMimeType: 'application/json' }
-    );
+      const response =
+        await callGeminiContent(
+          'gemini-3.8-flash',
+          prompt,
+          {
+            responseMimeType:
+              'application/json',
+          }
+        );
 
-    const parsed = JSON.parse(response.text || '{}');
-    res.json(parsed);
-  } catch (err: any) {
-    console.error('Debug API Error:', err);
-    // Intelligent fallback
-    res.json({
-      fixedCode: code.replace(/==/g, '==='),
-      bugType: 'Static Type & Boundary Optimization',
-      explanation: 'Optimized strict equality checks, handled nullable safety guards, and safeguarded boundary constraints.',
-      diffSummary: [
-        'Added strict null/undefined boundary validations',
-        'Optimized resource disposal and state scoping',
-        'Prevented unintended unhandled exception propagation'
-      ],
-      performanceTip: 'Consider caching frequent lookup keys into a Set or Map to achieve O(1) constant-time access.'
-    });
+      const parsed = JSON.parse(
+        response.text || '{}'
+      );
+
+      res.json(parsed);
+    } catch (error: any) {
+      console.error(
+        'Debug API Error:',
+        error
+      );
+
+      res.status(500).json({
+        error:
+          error?.message ||
+          'Failed to debug code',
+      });
+    }
   }
-});
+);
 
-// Code Line-by-Line Explanation
-app.post('/api/code/explain-lines', async (req: Request, res: Response) => {
-  const { code, language } = req.body;
+/* =========================================================
+   Line-by-Line Code Explanation
+   ========================================================= */
 
-  if (!code) {
-    res.status(400).json({ error: 'Code is required' });
-    return;
-  }
+app.post(
+  '/api/code/explain-lines',
+  async (req: Request, res: Response) => {
+    const { code, language } = req.body;
 
-  try {
-    const prompt = `Inspect the following ${language || ''} code and provide an insightful line-by-line explanation for each logical line or section.
+    if (!code) {
+      res.status(400).json({
+        error: 'Code is required',
+      });
+
+      return;
+    }
+
+    try {
+      const prompt = `
+Inspect the following ${language || ''} code.
+
+Provide a useful line-by-line explanation.
 
 Code:
+
 \`\`\`${language || ''}
 ${code}
 \`\`\`
 
-Return a valid JSON object with:
-"overview": High-level summary of what the code achieves,
-"timeComplexity": "O(...)",
-"spaceComplexity": "O(...)",
-"lines": [
-  {
-    "lineNumber": number (1-based index matching the code),
-    "code": string,
-    "explanation": string,
-    "importance": "high" | "normal" | "setup"
+Return valid JSON:
+
+{
+  "overview": string,
+  "timeComplexity": string,
+  "spaceComplexity": string,
+  "lines": [
+    {
+      "lineNumber": number,
+      "code": string,
+      "explanation": string,
+      "importance": "high" | "normal" | "setup"
+    }
+  ]
+}
+`;
+
+      const response =
+        await callGeminiContent(
+          'gemini-3.8-flash',
+          prompt,
+          {
+            responseMimeType:
+              'application/json',
+          }
+        );
+
+      const parsed = JSON.parse(
+        response.text || '{}'
+      );
+
+      res.json(parsed);
+    } catch (error: any) {
+      console.error(
+        'Explain Lines API Error:',
+        error
+      );
+
+      /* ---------------------------------------------------
+         Deterministic Fallback
+         --------------------------------------------------- */
+
+      const rawLines =
+        String(code).split('\n');
+
+      res.json({
+        overview:
+          'Structured inspection of the code flow, state and computational branches.',
+
+        timeComplexity: 'O(N)',
+
+        spaceComplexity: 'O(1)',
+
+        lines: rawLines
+          .slice(0, 30)
+          .map(
+            (
+              line: string,
+              index: number
+            ) => ({
+              lineNumber: index + 1,
+
+              code: line,
+
+              explanation:
+                line
+                  .trim()
+                  .startsWith('//') ||
+                line
+                  .trim()
+                  .startsWith('#')
+                  ? 'Documentation or comment.'
+                  : line.includes(
+                      'function'
+                    ) ||
+                    line.includes(
+                      'def'
+                    ) ||
+                    line.includes('fun')
+                  ? 'Declares a function or sub-routine.'
+                  : line.includes(
+                      'return'
+                    )
+                  ? 'Returns a value from the current execution context.'
+                  : 'Executes an expression, assignment or operation.',
+
+              importance:
+                line.includes(
+                  'return'
+                ) ||
+                line.includes(
+                  'function'
+                ) ||
+                line.includes('def') ||
+                line.includes('fun')
+                  ? 'high'
+                  : 'normal',
+            })
+          ),
+      });
+    }
   }
-]`;
+);
 
-    const response = await callGeminiContent(
-      'gemini-3.8-flash',
-      prompt,
-      { responseMimeType: 'application/json' }
-    );
+/* =========================================================
+   DSA Solver
+   ========================================================= */
 
-    const parsed = JSON.parse(response.text || '{}');
-    res.json(parsed);
-  } catch (err: any) {
-    console.error('Explain Lines API Error:', err);
-    // Deterministic line parser fallback
-    const rawLines = code.split('\n');
-    res.json({
-      overview: 'Structured inspection of function flow, state assignments, and computational branches.',
-      timeComplexity: 'O(N)',
-      spaceComplexity: 'O(1)',
-      lines: rawLines.slice(0, 30).map((l: string, idx: number) => ({
-        lineNumber: idx + 1,
-        code: l,
-        explanation: l.trim().startsWith('//') || l.trim().startsWith('#')
-          ? 'Documentation commentary or annotation.'
-          : l.includes('function') || l.includes('def') || l.includes('fun')
-          ? 'Declares sub-routine interface, signature, and parameter bindings.'
-          : l.includes('return')
-          ? 'Terminates execution context and yields evaluated result.'
-          : 'Executes expression, binding scoped variables or invoking dispatchers.',
-        importance: l.includes('return') || l.includes('fun') || l.includes('def') ? 'high' : 'normal'
-      }))
-    });
-  }
-});
+app.post(
+  '/api/code/dsa-solver',
+  async (req: Request, res: Response) => {
+    const {
+      problem,
+      language,
+    } = req.body;
 
-// DSA and Coding Interview Solver
-app.post('/api/code/dsa-solver', async (req: Request, res: Response) => {
-  const { problem, language } = req.body;
+    if (!problem) {
+      res.status(400).json({
+        error:
+          'Problem description is required',
+      });
 
-  if (!problem) {
-    res.status(400).json({ error: 'Problem description is required' });
-    return;
-  }
+      return;
+    }
 
-  try {
-    const prompt = `You are an elite competitive programmer and FAANG technical interviewer.
-Solve this problem in ${language || 'Python'}:
+    try {
+      const prompt = `
+You are an elite competitive programmer and
+technical interviewer.
+
+Solve the following problem in
+${language || 'Python'}:
+
 "${problem}"
 
-Return a valid JSON object matching:
+Return valid JSON:
+
 {
   "title": string,
   "difficulty": "Easy" | "Medium" | "Hard",
@@ -299,70 +673,78 @@ Return a valid JSON object matching:
   "solutionCode": string,
   "edgeCases": string[],
   "testCases": [
-    { "input": string, "expectedOutput": string, "explanation": string }
-  ]
-}`;
-
-    const response = await callGeminiContent(
-      'gemini-3.8-flash',
-      prompt,
-      { responseMimeType: 'application/json' }
-    );
-
-    const parsed = JSON.parse(response.text || '{}');
-    res.json(parsed);
-  } catch (err: any) {
-    console.error('DSA Solver Error:', err);
-    // Fallback DSA solution
-    res.json({
-      title: 'Optimal Two-Pointer / Hash Solution',
-      difficulty: 'Medium',
-      intuition: 'Leverage constant-time hash lookups or monotonic two-pointer narrowing to eliminate brute-force quadratic search.',
-      approach: '1. Build frequency or index map in a single pass.\n2. Verify complement presence in O(1).\n3. Return optimal result without nested scanning.',
-      timeComplexity: 'O(N)',
-      spaceComplexity: 'O(N)',
-      solutionCode: language === 'kotlin' ? `fun solve(nums: IntArray, target: Int): IntArray {
-    val map = HashMap<Int, Int>()
-    for ((index, num) in nums.withIndex()) {
-        val complement = target - num
-        if (map.containsKey(complement)) {
-            return intArrayOf(map[complement]!!, index)
-        }
-        map[num] = index
+    {
+      "input": string,
+      "expectedOutput": string,
+      "explanation": string
     }
-    return intArrayOf()
-}` : `def solve(nums: list[int], target: int) -> list[int]:
-    lookup = {}
-    for idx, num in enumerate(nums):
-        complement = target - num
-        if complement in lookup:
-            return [lookup[complement], idx]
-        lookup[num] = idx
-    return []`,
-      edgeCases: ['Duplicate values', 'Negative integers', 'Empty or single element input'],
-      testCases: [
-        { input: '[2, 7, 11, 15], target = 9', expectedOutput: '[0, 1]', explanation: '2 + 7 = 9 at indices 0 and 1' },
-        { input: '[3, 2, 4], target = 6', expectedOutput: '[1, 2]', explanation: '2 + 4 = 6 at indices 1 and 2' }
-      ]
-    });
+  ]
+}
+`;
+
+      const response =
+        await callGeminiContent(
+          'gemini-3.8-flash',
+          prompt,
+          {
+            responseMimeType:
+              'application/json',
+          }
+        );
+
+      const parsed = JSON.parse(
+        response.text || '{}'
+      );
+
+      res.json(parsed);
+    } catch (error: any) {
+      console.error(
+        'DSA Solver Error:',
+        error
+      );
+
+      res.status(500).json({
+        error:
+          error?.message ||
+          'Failed to solve DSA problem',
+      });
+    }
   }
-});
+);
 
-// Complete Project Generator
-app.post('/api/code/generate-project', async (req: Request, res: Response) => {
-  const { prompt, type } = req.body;
+/* =========================================================
+   Complete Project Generator
+   ========================================================= */
 
-  if (!prompt) {
-    res.status(400).json({ error: 'Project prompt is required' });
-    return;
-  }
+app.post(
+  '/api/code/generate-project',
+  async (req: Request, res: Response) => {
+    const {
+      prompt,
+      type,
+    } = req.body;
 
-  try {
-    const systemPrompt = `You are a Principal Software Architect at Nexora AI.
-Generate a complete, ready-to-run multi-file project for the requested prompt.
-Project category: ${type || 'general software'}.
+    if (!prompt) {
+      res.status(400).json({
+        error:
+          'Project prompt is required',
+      });
 
-Return a valid JSON structure:
+      return;
+    }
+
+    try {
+      const systemPrompt = `
+You are a Principal Software Architect at Nexora AI.
+
+Generate a complete, ready-to-run multi-file
+project for the requested prompt.
+
+Project category:
+${type || 'general software'}
+
+Return valid JSON:
+
 {
   "projectName": string,
   "description": string,
@@ -376,47 +758,147 @@ Return a valid JSON structure:
       "description": string
     }
   ]
-}`;
+}
+`;
 
-    const response = await callGeminiContent(
-      'gemini-3.8-flash',
-      prompt,
-      {
-        systemInstruction: systemPrompt,
-        responseMimeType: 'application/json',
-      }
-    );
+      const response =
+        await callGeminiContent(
+          'gemini-3.8-flash',
+          prompt,
+          {
+            systemInstruction:
+              systemPrompt,
 
-    const parsed = JSON.parse(response.text || '{}');
-    res.json(parsed);
-  } catch (err: any) {
-    console.error('Project Generator Error:', err);
-    res.status(500).json({ error: err?.message || 'Failed to generate project' });
+            responseMimeType:
+              'application/json',
+          }
+        );
+
+      const parsed = JSON.parse(
+        response.text || '{}'
+      );
+
+      res.json(parsed);
+    } catch (error: any) {
+      console.error(
+        'Project Generator Error:',
+        error
+      );
+
+      res.status(500).json({
+        error:
+          error?.message ||
+          'Failed to generate project',
+      });
+    }
   }
-});
+);
 
-// Start server and handle Vite middleware
+/* =========================================================
+   Production Static Files
+   ========================================================= */
+
 async function startServer() {
-  if (process.env.NODE_ENV !== 'production') {
-    const { createServer: createViteServer } = await import('vite');
-    const vite = await createViteServer({
-      server: { middlewareMode: true },
-      appType: 'spa',
-    });
+  const isProduction =
+    process.env.NODE_ENV === 'production';
+
+  if (!isProduction) {
+    /* -----------------------------------------------------
+       Development
+       ----------------------------------------------------- */
+
+    const {
+      createServer: createViteServer,
+    } = await import('vite');
+
+    const vite =
+      await createViteServer({
+        server: {
+          middlewareMode: true,
+        },
+
+        appType: 'spa',
+      });
+
     app.use(vite.middlewares);
   } else {
-    app.use(express.static(path.join(__dirname, 'dist')));
-    app.get('*', (_req: Request, res: Response) => {
-      res.sendFile(path.join(__dirname, 'dist', 'index.html'));
-    });
+    /* -----------------------------------------------------
+       Production
+       ----------------------------------------------------- */
+
+    const distPath =
+      path.join(__dirname, 'dist');
+
+    app.use(
+      express.static(distPath)
+    );
+
+    /*
+     * SPA fallback.
+     *
+     * This allows React routes to work correctly
+     * when directly opened in the browser.
+     */
+    app.use(
+      (
+        req: Request,
+        res: Response,
+        next
+      ) => {
+        if (req.method !== 'GET') {
+          next();
+          return;
+        }
+
+        res.sendFile(
+          path.join(
+            distPath,
+            'index.html'
+          )
+        );
+      }
+    );
   }
 
-  app.listen(PORT, '0.0.0.0', () => {
-    console.log(`Nexora AI Server running on http://0.0.0.0:${PORT}`);
-  });
+  /* =======================================================
+     Start HTTP Server
+     ======================================================= */
+
+  app.listen(
+    PORT,
+    '0.0.0.0',
+    () => {
+      console.log(
+        `🚀 Nexora AI Server running on port ${PORT}`
+      );
+
+      console.log(
+        `🌐 Environment: ${
+          process.env.NODE_ENV ||
+          'development'
+        }`
+      );
+
+      console.log(
+        `🔑 Gemini API Key: ${
+          process.env.GEMINI_API_KEY
+            ? 'Configured'
+            : 'Missing'
+        }`
+      );
+    }
+  );
 }
 
-startServer().catch((err) => {
-  console.error('Failed to start server:', err);
+/* =========================================================
+   Start Application
+   ========================================================= */
+
+startServer().catch((error) => {
+  console.error(
+    '❌ Failed to start Nexora AI server:',
+    error
+  );
+
   process.exit(1);
 });
