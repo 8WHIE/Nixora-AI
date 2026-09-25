@@ -132,13 +132,9 @@ export default function App() {
 
       {/* Main Container / Android Device Mockup Frame */}
       <div
-        className={`w-full h-full flex flex-col transition-all duration-300 relative ${
-          viewMode === 'phone'
-            ? 'max-w-[430px] h-[92vh] max-h-[920px] rounded-[48px] ring-12 ring-slate-900 border-4 border-slate-800/80 shadow-[0_0_60px_rgba(6,182,212,0.18)] overflow-hidden bg-[#030712]'
-            : viewMode === 'tablet'
-            ? 'max-w-[860px] h-[92vh] max-h-[900px] rounded-[36px] ring-8 ring-slate-900 border-2 border-slate-800 shadow-[0_0_50px_rgba(99,102,241,0.15)] overflow-hidden bg-[#030712]'
-            : 'w-full h-screen rounded-none border-0 ring-0 bg-[#030712]'
-        }`}
+        {/* Container (Main Wrapper) */}
+<div className="w-full h-screen flex flex-col transition-all duration-300 relative bg-[#030712]">
+
       >
         {/* Android Status Bar (Always on mobile mockup or fullscreen) */}
         <AndroidStatusBar />
