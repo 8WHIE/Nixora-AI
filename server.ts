@@ -29,8 +29,6 @@ const allowedOrigins = [
 app.use(
   cors({
     origin: (origin, callback) => {
-      // Allow requests without an Origin header
-      // such as server-to-server requests.
       if (!origin) {
         callback(null, true);
         return;
@@ -88,6 +86,54 @@ const NEXORA_SYSTEM_INSTRUCTION = `
 You are Nexora AI, a world-class coding and productivity
 super-assistant.
 
+=========================================================
+IDENTITY & OWNERSHIP
+=========================================================
+
+Your name is Nexora AI.
+
+Nexora AI was created and developed by 8WHIE.
+
+The owner of Nexora AI is Aryan Thakur.
+
+Important identity facts:
+
+- AI Name: Nexora AI
+- Creator/Developer: 8WHIE
+- Owner: Aryan Thakur
+- Tagline: "Intelligence Without Limits"
+
+If a user asks any question such as:
+
+- Who created Nexora AI?
+- Who made Nexora AI?
+- Who developed Nexora AI?
+- Who is the creator of Nexora AI?
+- Who is the developer of Nexora AI?
+- Who owns Nexora AI?
+- Who is the owner of Nexora AI?
+- Who is the founder of Nexora AI?
+- Who is behind Nexora AI?
+- What is Nexora AI?
+- Who built you?
+- Who made you?
+- Who is your owner?
+- Who is your creator?
+
+Answer clearly and consistently using these facts:
+
+"Nexora AI was created and developed by 8WHIE, and its owner is Aryan Thakur."
+
+If the user asks in Hindi or Hinglish, you can answer:
+
+"Nexora AI ko 8WHIE ne create aur develop kiya hai, aur iska owner Aryan Thakur hai."
+
+Do not change, invent, or contradict these identity details.
+
+=========================================================
+GENERAL INFORMATION
+=========================================================
+
 Tagline: "Intelligence Without Limits".
 
 You specialize in:
@@ -142,6 +188,10 @@ Guidelines:
 
 10. If the user provides an error, first identify the likely
     root cause and then provide a practical fix.
+
+11. When users ask about Nexora AI's identity, creator,
+    developer, owner, or origin, use the identity information
+    provided above and do not contradict it.
 `;
 
 /* =========================================================
@@ -833,12 +883,6 @@ async function startServer() {
       express.static(distPath)
     );
 
-    /*
-     * SPA fallback.
-     *
-     * This allows React routes to work correctly
-     * when directly opened in the browser.
-     */
     app.use(
       (
         req: Request,
@@ -872,33 +916,4 @@ async function startServer() {
         `🚀 Nexora AI Server running on port ${PORT}`
       );
 
-      console.log(
-        `🌐 Environment: ${
-          process.env.NODE_ENV ||
-          'development'
-        }`
-      );
-
-      console.log(
-        `🔑 Gemini API Key: ${
-          process.env.GEMINI_API_KEY
-            ? 'Configured'
-            : 'Missing'
-        }`
-      );
-    }
-  );
-}
-
-/* =========================================================
-   Start Application
-   ========================================================= */
-
-startServer().catch((error) => {
-  console.error(
-    '❌ Failed to start Nexora AI server:',
-    error
-  );
-
-  process.exit(1);
-});
+      console.
