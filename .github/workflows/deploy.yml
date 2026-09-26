@@ -1,4 +1,4 @@
-name: Deploy Nexora AI to GitHub Pages
+name: Deploy Nixora AI to GitHub Pages
 
 on:
   push:

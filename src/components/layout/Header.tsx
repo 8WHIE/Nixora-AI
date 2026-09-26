@@ -27,7 +27,7 @@ export const Header: React.FC<HeaderProps> = ({
           <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-cyan-500 via-indigo-600 to-purple-600 p-[1.5px] shadow-neon-cyan/40">
             <div className="w-full h-full bg-[#030712] rounded-[10px] flex items-center justify-center relative overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-tr from-cyan-500/20 to-purple-500/20 animate-pulse-slow" />
-              {/* Futuristic hexagonal Nexora AI Core */}
+              {/* Futuristic hexagonal Nixora AI Core */}
               <svg className="w-5 h-5 text-cyan-400 group-hover:rotate-12 transition-transform duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M12 2L2 7l10 5 10-5-10-5z" stroke="url(#cyan-grad)" />
                 <path d="M2 17l10 5 10-5" stroke="url(#purple-grad)" />
@@ -51,7 +51,7 @@ export const Header: React.FC<HeaderProps> = ({
         <div>
           <div className="flex items-center gap-1.5">
             <h1 className="text-sm font-extrabold tracking-tight text-white flex items-center gap-1">
-              Nexora<span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-400">AI</span>
+              Nixora<span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-400">AI</span>
             </h1>
             <span className="text-[10px] font-mono text-cyan-400/90 bg-cyan-950/40 border border-cyan-500/20 px-1.5 py-0.5 rounded">
               v1.0

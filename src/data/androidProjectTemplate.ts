@@ -5,9 +5,9 @@ export const ANDROID_PROJECT_FILES: ProjectFile[] = [
     path: 'README.md',
     language: 'markdown',
     description: 'Instructions to build the Android APK with Android Studio or CLI',
-    content: `# Nexora AI - Android Application
+    content: `# Nixora AI - Android Application
 **Tagline**: Intelligence Without Limits
-**Package**: com.nexora.ai
+**Package**: com.nixora.ai
 
 ## Prerequisites
 - Android Studio Ladybug (2024.2+) or newer
@@ -89,7 +89,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "NexoraAI"
+rootProject.name = "NixoraAI"
 include(":app")
 `
   },
@@ -114,11 +114,11 @@ kotlin.code.style=official
 }
 
 android {
-    namespace = "com.nexora.ai"
+    namespace = "com.nixora.ai"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.nexora.ai"
+        applicationId = "com.nixora.ai"
         minSdk = 26
         targetSdk = 35
         versionCode = 1
@@ -211,12 +211,12 @@ dependencies {
         android:label="@string/app_name"
         android:roundIcon="@drawable/ic_launcher_foreground"
         android:supportsRtl="true"
-        android:theme="@style/Theme.NexoraAI">
+        android:theme="@style/Theme.NixoraAI">
 
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:theme="@style/Theme.NexoraAI"
+            android:theme="@style/Theme.NixoraAI"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -230,10 +230,10 @@ dependencies {
 `
   },
   {
-    path: 'app/src/main/java/com/nexora/ai/MainActivity.kt',
+    path: 'app/src/main/java/com/nixora/ai/MainActivity.kt',
     language: 'kotlin',
     description: 'Main Activity class initializing Jetpack Compose app shell',
-    content: `package com.nexora.ai
+    content: `package com.nixora.ai
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -242,19 +242,19 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import com.nexora.ai.ui.theme.NexoraTheme
+import com.nixora.ai.ui.theme.NixoraTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            NexoraTheme {
+            NixoraTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = androidx.compose.ui.graphics.Color(0xFF030712)
                 ) {
-                    NexoraApp()
+                    NixoraApp()
                 }
             }
         }
@@ -263,10 +263,10 @@ class MainActivity : ComponentActivity() {
 `
   },
   {
-    path: 'app/src/main/java/com/nexora/ai/NexoraApp.kt',
+    path: 'app/src/main/java/com/nixora/ai/NixoraApp.kt',
     language: 'kotlin',
     description: 'Top-level Compose Application with navigation bar and state',
-    content: `package com.nexora.ai
+    content: `package com.nixora.ai
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -279,8 +279,8 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.*
-import com.nexora.ai.ui.screens.ChatScreen
-import com.nexora.ai.ui.screens.CodeStudioScreen
+import com.nixora.ai.ui.screens.ChatScreen
+import com.nixora.ai.ui.screens.CodeStudioScreen
 
 sealed class Screen(val route: String, val title: String, val icon: androidx.compose.ui.graphics.vector.ImageVector) {
     object Chat : Screen("chat", "Chat", Icons.Default.ChatBubble)
@@ -290,7 +290,7 @@ sealed class Screen(val route: String, val title: String, val icon: androidx.com
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NexoraApp() {
+fun NixoraApp() {
     val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
@@ -301,7 +301,7 @@ fun NexoraApp() {
                 title = {
                     Row(modifier = Modifier.fillMaxWidth()) {
                         Text(
-                            text = "Nexora AI",
+                            text = "Nixora AI",
                             style = MaterialTheme.typography.titleMedium,
                             color = Color.White
                         )
@@ -364,7 +364,7 @@ fun NexoraApp() {
             }
             composable(Screen.Settings.route) {
                 Box(modifier = Modifier.fillMaxSize().padding(16.dp)) {
-                    Text("Nexora AI Settings\\nVersion: 1.0.0\\nEngine: Gemini 3.8 Flash", color = Color.White)
+                    Text("Nixora AI Settings\\nVersion: 1.0.0\\nEngine: Gemini 3.8 Flash", color = Color.White)
                 }
             }
         }
@@ -373,48 +373,48 @@ fun NexoraApp() {
 `
   },
   {
-    path: 'app/src/main/java/com/nexora/ai/ui/theme/Color.kt',
+    path: 'app/src/main/java/com/nixora/ai/ui/theme/Color.kt',
     language: 'kotlin',
     description: 'Futuristic color palette for Android Material 3',
-    content: `package com.nexora.ai.ui.theme
+    content: `package com.nixora.ai.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val NexoraBackground = Color(0xFF030712)
-val NexoraSurface = Color(0xFF0B0F19)
-val NexoraPrimary = Color(0xFF6366F1)
-val NexoraSecondary = Color(0xFF06B6D4)
-val NexoraTertiary = Color(0xFFA855F7)
-val NexoraAccent = Color(0xFF38BDF8)
-val NexoraText = Color(0xFFF8FAFC)
-val NexoraTextMuted = Color(0xFF94A3B8)
-val NexoraCardBorder = Color(0xFF1E293B)
+val NixoraBackground = Color(0xFF030712)
+val NixoraSurface = Color(0xFF0B0F19)
+val NixoraPrimary = Color(0xFF6366F1)
+val NixoraSecondary = Color(0xFF06B6D4)
+val NixoraTertiary = Color(0xFFA855F7)
+val NixoraAccent = Color(0xFF38BDF8)
+val NixoraText = Color(0xFFF8FAFC)
+val NixoraTextMuted = Color(0xFF94A3B8)
+val NixoraCardBorder = Color(0xFF1E293B)
 `
   },
   {
-    path: 'app/src/main/java/com/nexora/ai/ui/theme/Theme.kt',
+    path: 'app/src/main/java/com/nixora/ai/ui/theme/Theme.kt',
     language: 'kotlin',
-    description: 'Nexora Theme definition',
-    content: `package com.nexora.ai.ui.theme
+    description: 'Nixora Theme definition',
+    content: `package com.nixora.ai.ui.theme
 
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
 private val DarkColorScheme = darkColorScheme(
-    primary = NexoraPrimary,
-    secondary = NexoraSecondary,
-    tertiary = NexoraTertiary,
-    background = NexoraBackground,
-    surface = NexoraSurface,
+    primary = NixoraPrimary,
+    secondary = NixoraSecondary,
+    tertiary = NixoraTertiary,
+    background = NixoraBackground,
+    surface = NixoraSurface,
     onPrimary = Color.White,
     onSecondary = Color.Black,
-    onBackground = NexoraText,
-    onSurface = NexoraText
+    onBackground = NixoraText,
+    onSurface = NixoraText
 )
 
 @Composable
-fun NexoraTheme(content: @Composable () -> Unit) {
+fun NixoraTheme(content: @Composable () -> Unit) {
     MaterialTheme(
         colorScheme = DarkColorScheme,
         content = content
@@ -423,10 +423,10 @@ fun NexoraTheme(content: @Composable () -> Unit) {
 `
   },
   {
-    path: 'app/src/main/java/com/nexora/ai/ui/screens/ChatScreen.kt',
+    path: 'app/src/main/java/com/nixora/ai/ui/screens/ChatScreen.kt',
     language: 'kotlin',
     description: 'Jetpack Compose Chat Screen with message stream and voice input',
-    content: `package com.nexora.ai.ui.screens
+    content: `package com.nixora.ai.ui.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -442,7 +442,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.nexora.ai.data.model.ChatMessage
+import com.nixora.ai.data.model.ChatMessage
 
 @Composable
 fun ChatScreen() {
@@ -452,7 +452,7 @@ fun ChatScreen() {
             ChatMessage(
                 id = "1",
                 role = "model",
-                content = "Greetings! I am Nexora AI. Your advanced coding and productivity assistant. How can I accelerate your development today?",
+                content = "Greetings! I am Nixora AI. Your advanced coding and productivity assistant. How can I accelerate your development today?",
                 timestamp = "Just now"
             )
         )
@@ -500,7 +500,7 @@ fun ChatScreen() {
             TextField(
                 value = inputText,
                 onValueChange = { inputText = it },
-                placeholder = { Text("Ask Nexora anything...", color = Color.Gray) },
+                placeholder = { Text("Ask Nixora anything...", color = Color.Gray) },
                 colors = TextFieldDefaults.colors(
                     focusedContainerColor = Color.Transparent,
                     unfocusedContainerColor = Color.Transparent,
@@ -539,10 +539,10 @@ fun ChatScreen() {
 `
   },
   {
-    path: 'app/src/main/java/com/nexora/ai/data/model/ChatMessage.kt',
+    path: 'app/src/main/java/com/nixora/ai/data/model/ChatMessage.kt',
     language: 'kotlin',
     description: 'Kotlin data model for Chat Messages',
-    content: `package com.nexora.ai.data.model
+    content: `package com.nixora.ai.data.model
 
 data class ChatMessage(
     val id: String,
@@ -555,16 +555,16 @@ data class ChatMessage(
 `
   },
   {
-    path: 'app/src/main/java/com/nexora/ai/data/repository/NexoraRepository.kt',
+    path: 'app/src/main/java/com/nixora/ai/data/repository/NixoraRepository.kt',
     language: 'kotlin',
     description: 'Gemini GenerativeModel repository for Kotlin Android',
-    content: `package com.nexora.ai.data.repository
+    content: `package com.nixora.ai.data.repository
 
 import com.google.ai.client.generativeai.GenerativeModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class NexoraRepository(apiKey: String) {
+class NixoraRepository(apiKey: String) {
     private val generativeModel = GenerativeModel(
         modelName = "gemini-1.5-flash",
         apiKey = apiKey
@@ -589,7 +589,7 @@ class NexoraRepository(apiKey: String) {
     language: 'xml',
     description: 'Android string resources',
     content: `<resources>
-    <string name="app_name">Nexora AI</string>
+    <string name="app_name">Nixora AI</string>
     <string name="tagline">Intelligence Without Limits</string>
     <string name="send">Send</string>
     <string name="voice_input">Voice Input</string>
@@ -602,11 +602,11 @@ class NexoraRepository(apiKey: String) {
     language: 'xml',
     description: 'Android XML color definitions',
     content: `<resources>
-    <color name="nexora_bg">#030712</color>
-    <color name="nexora_surface">#0B0F19</color>
-    <color name="nexora_primary">#6366F1</color>
-    <color name="nexora_secondary">#06B6D4</color>
-    <color name="nexora_accent">#A855F7</color>
+    <color name="nixora_bg">#030712</color>
+    <color name="nixora_surface">#0B0F19</color>
+    <color name="nixora_primary">#6366F1</color>
+    <color name="nixora_secondary">#06B6D4</color>
+    <color name="nixora_accent">#A855F7</color>
 </resources>
 `
   },
@@ -615,8 +615,8 @@ class NexoraRepository(apiKey: String) {
     language: 'json',
     description: 'Capacitor Hybrid Mobile Bridge configuration for instant APK packaging',
     content: `{
-  "appId": "com.nexora.ai",
-  "appName": "Nexora AI",
+  "appId": "com.nixora.ai",
+  "appName": "Nixora AI",
   "webDir": "dist",
   "bundledWebRuntime": false,
   "server": {

@@ -61,7 +61,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onFinish }) => {
             <div className="w-full h-full bg-[#030712] rounded-[22px] flex items-center justify-center relative overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/20 via-transparent to-purple-500/30" />
               
-              {/* Nexora Geometric Neural Hexagon */}
+              {/* Nixora Geometric Neural Hexagon */}
               <svg className="w-14 h-14 text-cyan-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75">
                 <path d="M12 2L2 7l10 5 10-5-10-5z" stroke="#38bdf8" />
                 <path d="M2 17l10 5 10-5" stroke="#a855f7" />
@@ -76,7 +76,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onFinish }) => {
         </div>
 
         <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-white mb-2">
-          Nexora <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-indigo-300 to-purple-400">AI</span>
+          Nixora <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-indigo-300 to-purple-400">AI</span>
         </h1>
 
         <p className="text-sm font-medium tracking-wide text-slate-300 uppercase">

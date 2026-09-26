@@ -61,7 +61,7 @@ export default function App() {
   const [settings, setSettings] =
     useState<AppSettings>(() => {
       const saved =
-        localStorage.getItem('nexora_settings');
+        localStorage.getItem('nixora_settings');
 
       if (saved) {
         try {
@@ -91,7 +91,7 @@ export default function App() {
   const [user, setUser] =
     useState<UserProfile>(() => {
       const saved =
-        localStorage.getItem('nexora_user');
+        localStorage.getItem('nixora_user');
 
       if (saved) {
         try {
@@ -103,8 +103,8 @@ export default function App() {
 
       return {
         id: 'usr_dev_1',
-        name: 'Nexora Engineer',
-        email: 'engineer@nexora.ai',
+        name: 'Nixora Engineer',
+        email: 'engineer@nixora.ai',
         role: 'Lead Android & AI Developer',
         avatar: 'N',
         isGuest: false,
@@ -126,7 +126,7 @@ export default function App() {
   // --------------------------------------------------
   useEffect(() => {
     localStorage.setItem(
-      'nexora_settings',
+      'nixora_settings',
       JSON.stringify(settings)
     );
   }, [settings]);
@@ -136,7 +136,7 @@ export default function App() {
   // --------------------------------------------------
   useEffect(() => {
     localStorage.setItem(
-      'nexora_user',
+      'nixora_user',
       JSON.stringify(user)
     );
   }, [user]);
@@ -268,7 +268,7 @@ export default function App() {
         <AndroidStatusBar />
 
         {/* ==================================================
-            Nexora Header
+            Nixora Header
             ================================================== */}
 
         <Header

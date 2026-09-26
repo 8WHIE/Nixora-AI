@@ -43,7 +43,7 @@ export const AndroidApkHub: React.FC = () => {
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
-      link.download = 'NexoraAI-Android-Project.zip';
+      link.download = 'NixoraAI-Android-Project.zip';
       link.click();
       URL.revokeObjectURL(url);
 
@@ -102,7 +102,7 @@ export const AndroidApkHub: React.FC = () => {
           <div className="flex items-center gap-2">
             <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
             <span>
-              <strong>NexoraAI-Android-Project.zip</strong> exported successfully! Extract and open in Android Studio to build APK.
+              <strong>NixoraAI-Android-Project.zip</strong> exported successfully! Extract and open in Android Studio to build APK.
             </span>
           </div>
           <span className="font-mono text-[10px] text-emerald-400">./gradlew assembleDebug</span>

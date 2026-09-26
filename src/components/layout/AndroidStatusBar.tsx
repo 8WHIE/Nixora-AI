@@ -21,7 +21,7 @@ export const AndroidStatusBar: React.FC = () => {
         <span className="tracking-tight text-white">{time}</span>
         <div className="flex items-center gap-1 text-[10px] text-cyan-400">
           <Sparkles className="w-3 h-3 animate-pulse" />
-          <span className="font-mono text-[9px] uppercase tracking-wider text-cyan-400/80">Nexora 5G</span>
+          <span className="font-mono text-[9px] uppercase tracking-wider text-cyan-400/80">Nixora 5G</span>
         </div>
       </div>
 

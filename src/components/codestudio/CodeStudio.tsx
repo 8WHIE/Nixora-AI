@@ -69,7 +69,7 @@ export const CodeStudio: React.FC<CodeStudioProps> = ({
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `nexora_${language}_${Date.now()}${ext}`;
+    a.download = `nixora_${language}_${Date.now()}${ext}`;
     a.click();
     URL.revokeObjectURL(url);
   };
@@ -471,7 +471,7 @@ Please provide ONLY the code block without markdown conversational text, so it c
               <span className="w-3 h-3 rounded-full bg-yellow-500/80" />
               <span className="w-3 h-3 rounded-full bg-green-500/80" />
               <span className="ml-2 font-mono text-xs text-slate-400">
-                nexora_workspace.{SUPPORTED_LANGUAGES.find((l) => l.id === language)?.extension.replace('.', '')}
+                nixora_workspace.{SUPPORTED_LANGUAGES.find((l) => l.id === language)?.extension.replace('.', '')}
               </span>
             </div>
 

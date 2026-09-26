@@ -43,9 +43,9 @@ export const LiveSandbox: React.FC<LiveSandboxProps> = ({
     <div class="w-12 h-12 rounded-xl bg-gradient-to-tr from-cyan-500 to-purple-600 mx-auto flex items-center justify-center shadow-lg mb-4">
       <span class="text-xl">⚡</span>
     </div>
-    <h1 class="text-2xl font-bold text-white mb-1">Nexora Cyber Node</h1>
+    <h1 class="text-2xl font-bold text-white mb-1">Nixora Cyber Node</h1>
     <p class="text-xs text-cyan-400 font-mono mb-4">ONLINE · LATENCY 12ms · PROTOCOL V2</p>
-    <p class="text-xs text-slate-400 mb-6">Interactive live web sandbox powered by Nexora AI. Modify HTML/CSS or generate fresh designs from prompts.</p>
+    <p class="text-xs text-slate-400 mb-6">Interactive live web sandbox powered by Nixora AI. Modify HTML/CSS or generate fresh designs from prompts.</p>
     
     <div class="space-y-3">
       <div class="flex items-center justify-between p-3 rounded-xl bg-slate-950/80 border border-slate-800 text-xs">
@@ -65,7 +65,7 @@ export const LiveSandbox: React.FC<LiveSandboxProps> = ({
 
   <script>
     function triggerImpulse() {
-      alert('Synaptic impulse dispatched across the Nexora edge grid!');
+      alert('Synaptic impulse dispatched across the Nixora edge grid!');
     }
   </script>
 </body>
@@ -292,7 +292,7 @@ Return ONLY valid HTML inside \`\`\`html without extra conversational fluff so i
                 }`}
               >
                 <iframe
-                  title="Nexora Web Sandbox"
+                  title="Nixora Web Sandbox"
                   srcDoc={webCode}
                   sandbox="allow-scripts allow-modals"
                   className="w-full h-full bg-[#030712] border-0"
@@ -314,7 +314,7 @@ Return ONLY valid HTML inside \`\`\`html without extra conversational fluff so i
                     N
                   </div>
                   <div>
-                    <h3 className="text-xs font-bold text-white">Nexora Native</h3>
+                    <h3 className="text-xs font-bold text-white">Nixora Native</h3>
                     <p className="text-[10px] text-cyan-400 font-mono">Jetpack Compose M3</p>
                   </div>
                 </div>

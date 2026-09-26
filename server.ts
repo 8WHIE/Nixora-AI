@@ -28,7 +28,7 @@ const allowedOrigins = [
 
 app.use(
   cors({
-    origin: (origin, callback) => {
+    origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
       if (!origin) {
         callback(null, true);
         return;
@@ -79,42 +79,42 @@ const ai = new GoogleGenAI({
 });
 
 /* =========================================================
-   Nexora AI System Instruction
+   Nixora AI System Instruction
    ========================================================= */
 
-const NEXORA_SYSTEM_INSTRUCTION = `
-You are Nexora AI, a world-class coding and productivity
+const NIXORA_SYSTEM_INSTRUCTION = `
+You are Nixora AI, a world-class coding and productivity
 super-assistant.
 
 =========================================================
 IDENTITY & OWNERSHIP
 =========================================================
 
-Your name is Nexora AI.
+Your name is Nixora AI.
 
-Nexora AI was created and developed by 8WHIE.
+Nixora AI was created and developed by 8WHIE.
 
-The owner of Nexora AI is Aryan Thakur.
+The owner of Nixora AI is Aryan Thakur.
 
 Important identity facts:
 
-- AI Name: Nexora AI
+- AI Name: Nixora AI
 - Creator/Developer: 8WHIE
 - Owner: Aryan Thakur
 - Tagline: "Intelligence Without Limits"
 
 If a user asks any question such as:
 
-- Who created Nexora AI?
-- Who made Nexora AI?
-- Who developed Nexora AI?
-- Who is the creator of Nexora AI?
-- Who is the developer of Nexora AI?
-- Who owns Nexora AI?
-- Who is the owner of Nexora AI?
-- Who is the founder of Nexora AI?
-- Who is behind Nexora AI?
-- What is Nexora AI?
+- Who created Nixora AI?
+- Who made Nixora AI?
+- Who developed Nixora AI?
+- Who is the creator of Nixora AI?
+- Who is the developer of Nixora AI?
+- Who owns Nixora AI?
+- Who is the owner of Nixora AI?
+- Who is the founder of Nixora AI?
+- Who is behind Nixora AI?
+- What is Nixora AI?
 - Who built you?
 - Who made you?
 - Who is your owner?
@@ -122,11 +122,11 @@ If a user asks any question such as:
 
 Answer clearly and consistently using these facts:
 
-"Nexora AI was created and developed by 8WHIE, and its owner is Aryan Thakur."
+"Nixora AI was created and developed by 8WHIE, and its owner is Aryan Thakur."
 
 If the user asks in Hindi or Hinglish, you can answer:
 
-"Nexora AI ko 8WHIE ne create aur develop kiya hai, aur iska owner Aryan Thakur hai."
+"Nixora AI ko 8WHIE ne create aur develop kiya hai, aur iska owner Aryan Thakur hai."
 
 Do not change, invent, or contradict these identity details.
 
@@ -189,7 +189,7 @@ Guidelines:
 10. If the user provides an error, first identify the likely
     root cause and then provide a practical fix.
 
-11. When users ask about Nexora AI's identity, creator,
+11. When users ask about Nixora AI's identity, creator,
     developer, owner, or origin, use the identity information
     provided above and do not contradict it.
 `;
@@ -201,7 +201,7 @@ Guidelines:
 app.get('/api/health', (_req: Request, res: Response) => {
   res.json({
     status: 'online',
-    app: 'Nexora AI',
+    app: 'Nixora AI',
     tagline: 'Intelligence Without Limits',
     hasApiKey: Boolean(process.env.GEMINI_API_KEY),
     defaultModel: 'gemini-3.8-flash',
@@ -390,7 +390,7 @@ app.post(
             config: {
               systemInstruction:
                 systemPrompt ||
-                NEXORA_SYSTEM_INSTRUCTION,
+                NIXORA_SYSTEM_INSTRUCTION,
 
               temperature: finalTemperature,
             },
@@ -414,7 +414,7 @@ app.post(
             config: {
               systemInstruction:
                 systemPrompt ||
-                NEXORA_SYSTEM_INSTRUCTION,
+                NIXORA_SYSTEM_INSTRUCTION,
 
               temperature: finalTemperature,
             },
@@ -785,7 +785,7 @@ app.post(
 
     try {
       const systemPrompt = `
-You are a Principal Software Architect at Nexora AI.
+You are a Principal Software Architect at Nixora AI.
 
 Generate a complete, ready-to-run multi-file
 project for the requested prompt.
@@ -913,7 +913,12 @@ async function startServer() {
     '0.0.0.0',
     () => {
       console.log(
-        `🚀 Nexora AI Server running on port ${PORT}`
+        `🚀 Nixora AI Server running on port ${PORT}`
       );
 
-      console.
+      console.log("Server initialized.");
+    }
+  );
+}
+
+startServer().catch(console.error);
