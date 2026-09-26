@@ -27,8 +27,8 @@ export const SUPPORTED_LANGUAGES: Array<{
 ];
 
 export const STARTER_CODE_TEMPLATES: Record<ProgrammingLanguage, string> = {
-  kotlin: `// Modern Android Jetpack Compose UI with Nexora
-package com.nexora.ai.ui
+  kotlin: `// Modern Android Jetpack Compose UI with Nixora
+package com.nixora.ai.ui
 
 import androidx.compose.animation.*
 import androidx.compose.foundation.background
@@ -119,7 +119,7 @@ export function debounce<T extends (...args: any[]) => any>(
   return debounced;
 }`,
   javascript: `// Real-time Event Bus implementation with wildcard support
-class NexoraEventBus {
+class NixoraEventBus {
   constructor() {
     this.listeners = new Map();
   }
@@ -148,7 +148,7 @@ class NexoraEventBus {
 }`,
   react: `import React, { useState, useEffect } from 'react';
 
-export function NexoraPulseCounter() {
+export function NixoraPulseCounter() {
   const [count, setCount] = useState(0);
   const [pulsing, setPulsing] = useState(false);
 
@@ -179,7 +179,7 @@ export function NexoraPulseCounter() {
     </div>
   );
 }`,
-  java: `package com.nexora.dsa;
+  java: `package com.nixora.dsa;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -242,7 +242,7 @@ public class LRUCache {
 #include <algorithm>
 
 template <typename T>
-class NexoraRingBuffer {
+class NixoraRingBuffer {
 private:
     std::vector<T> buffer;
     size_t head = 0;
@@ -251,7 +251,7 @@ private:
     bool full = false;
 
 public:
-    explicit NexoraRingBuffer(size_t size) : buffer(size), maxSize(size) {}
+    explicit NixoraRingBuffer(size_t size) : buffer(size), maxSize(size) {}
 
     void push(T item) {
         buffer[head] = item;
@@ -276,7 +276,7 @@ public:
 };
 
 int main() {
-    NexoraRingBuffer<int> rb(3);
+    NixoraRingBuffer<int> rb(3);
     rb.push(10);
     rb.push(20);
     rb.push(30);
@@ -292,7 +292,7 @@ int main() {
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Nexora AI Interactive Card</title>
+  <title>Nixora AI Interactive Card</title>
   <style>
     body {
       background: #030712;
@@ -345,22 +345,22 @@ int main() {
 <body>
   <div class="card">
     <div class="badge">System Architecture</div>
-    <h2>Nexora Node</h2>
+    <h2>Nixora Node</h2>
     <p>Neural edge processor running low-latency synthesis and reactive compilation.</p>
-    <button class="btn" onclick="alert('Nexora Engine Activated!')">Activate Node</button>
+    <button class="btn" onclick="alert('Nixora Engine Activated!')">Activate Node</button>
   </div>
 </body>
 </html>`,
-  css: `/* Futuristic Glassmorphic Neon Styling for Nexora Components */
+  css: `/* Futuristic Glassmorphic Neon Styling for Nixora Components */
 :root {
-  --nexora-neon-cyan: #06b6d4;
-  --nexora-neon-purple: #a855f7;
-  --nexora-bg-dark: #030712;
-  --nexora-surface: rgba(15, 23, 42, 0.75);
+  --nixora-neon-cyan: #06b6d4;
+  --nixora-neon-purple: #a855f7;
+  --nixora-bg-dark: #030712;
+  --nixora-surface: rgba(15, 23, 42, 0.75);
 }
 
-.nexora-glass-panel {
-  background: var(--nexora-surface);
+.nixora-glass-panel {
+  background: var(--nixora-surface);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid rgba(99, 102, 241, 0.25);
@@ -369,14 +369,14 @@ int main() {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.nexora-glass-panel:hover {
+.nixora-glass-panel:hover {
   border-color: rgba(6, 182, 212, 0.5);
   box-shadow: 0 0 25px rgba(6, 182, 212, 0.35);
   transform: translateY(-2px);
 }
 
-.nexora-glow-text {
-  background: linear-gradient(135deg, var(--nexora-neon-cyan), var(--nexora-neon-purple));
+.nixora-glow-text {
+  background: linear-gradient(135deg, var(--nixora-neon-cyan), var(--nixora-neon-purple));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   text-shadow: 0 0 20px rgba(6, 182, 212, 0.3);

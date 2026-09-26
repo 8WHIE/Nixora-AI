@@ -87,3 +87,20 @@
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+/* Tailwind Typography plugin overrides for markdown */
+@plugin "@tailwindcss/typography";
+
+.prose pre {
+  padding: 0 !important;
+  margin: 0 !important;
+  background-color: transparent !important;
+}
+
+.prose code::before {
+  content: "" !important;
+}
+
+.prose code::after {
+  content: "" !important;
+}

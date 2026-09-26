@@ -79,12 +79,15 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
       <div className="w-full max-w-lg bg-[#070b14] border border-indigo-950 rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
         {/* Header */}
         <div className="px-5 py-4 border-b border-slate-800 flex items-center justify-between bg-slate-900/60">
+        <div className="flex flex-col items-end">
+          <span className="text-[10px] text-slate-500 font-mono">Built by 8WHIE • Owner: Aryan Thakur</span>
+        </div>
           <div className="flex items-center gap-2">
             <div className="p-1.5 rounded-xl bg-gradient-to-tr from-cyan-500 to-indigo-600">
               <Cpu className="w-4 h-4 text-white" />
             </div>
             <div>
-              <h3 className="text-sm font-bold text-white">Nexora AI Engine Settings</h3>
+              <h3 className="text-sm font-bold text-white">Nixora AI Engine Settings</h3>
               <p className="text-[11px] text-slate-400">Intelligence Without Limits</p>
             </div>
           </div>

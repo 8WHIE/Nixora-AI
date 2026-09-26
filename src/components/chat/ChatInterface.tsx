@@ -16,7 +16,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
   onSendToSandbox,
 }) => {
   const [messages, setMessages] = useState<ChatMessage[]>(() => {
-    const saved = localStorage.getItem('nexora_messages');
+    const saved = localStorage.getItem('nixora_messages');
     if (saved) {
       try {
         return JSON.parse(saved);
@@ -29,7 +29,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
       {
         id: 'welcome-1',
         role: 'model',
-        content: `**Greetings! I am Nexora AI.** ⚡\n\n*Intelligence Without Limits.* I am your advanced coding and mobile engineering assistant powered by **Gemini 3.8 Flash**.\n\nHere is how I can assist you:\n- 🤖 **Android & Kotlin**: Generate production Jetpack Compose apps & APK structures\n- 💻 **Full-Stack & Code Gen**: Python, Java, TypeScript, C++, React, SQL, Rust, Go\n- 🐞 **Debug & Auto-Fix**: Hunt down memory leaks, race conditions, and runtime bugs\n- 🧠 **Algorithm & DSA**: Step-by-step interview solutions with complexity analysis\n- 🌐 **Web Sandbox**: Live code preview directly in your browser\n\nHow can I accelerate your development today?`,
+        content: `**Greetings! I am Nixora AI.** ⚡\n\n*Intelligence Without Limits.* I am your advanced coding and mobile engineering assistant powered by **Gemini 3.8 Flash**.\n\nHere is how I can assist you:\n- 🤖 **Android & Kotlin**: Generate production Jetpack Compose apps & APK structures\n- 💻 **Full-Stack & Code Gen**: Python, Java, TypeScript, C++, React, SQL, Rust, Go\n- 🐞 **Debug & Auto-Fix**: Hunt down memory leaks, race conditions, and runtime bugs\n- 🧠 **Algorithm & DSA**: Step-by-step interview solutions with complexity analysis\n- 🌐 **Web Sandbox**: Live code preview directly in your browser\n\nHow can I accelerate your development today?`,
         timestamp: new Date().toLocaleTimeString([], {
           hour: '2-digit',
           minute: '2-digit',
@@ -65,7 +65,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
   // Save to localStorage
   useEffect(() => {
     try {
-      localStorage.setItem('nexora_messages', JSON.stringify(messages));
+      localStorage.setItem('nixora_messages', JSON.stringify(messages));
     } catch (e) {
       // Storage quota or private browsing
     }
@@ -319,7 +319,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
             ? {
                 ...msg,
                 content:
-                  '⚡ Connection to Nexora Engine disrupted. Please verify your connection or try again.',
+                  '⚡ Connection to Nixora Engine disrupted. Please verify your connection or try again.',
                 isStreaming: false,
               }
             : msg
@@ -358,7 +358,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
         id: Date.now().toString(),
         role: 'model',
         content:
-          'Chat cleared. How can Nexora AI assist you now?',
+          'Chat cleared. How can Nixora AI assist you now?',
         timestamp: new Date().toLocaleTimeString([], {
           hour: '2-digit',
           minute: '2-digit',
@@ -366,7 +366,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
       };
 
       setMessages([resetMsg]);
-      localStorage.removeItem('nexora_messages');
+      localStorage.removeItem('nixora_messages');
     }
   };
 
@@ -427,7 +427,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
             placeholder={
               isListening
                 ? 'Listening... Speak now...'
-                : 'Ask Nexora (code, Android APK, debug, DSA)...'
+                : 'Ask Nixora (code, Android APK, debug, DSA)...'
             }
             className="flex-1 bg-transparent text-sm text-slate-100 placeholder:text-slate-500 resize-none outline-none max-h-32 py-1.5 px-1 font-sans"
           />

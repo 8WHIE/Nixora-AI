@@ -53,7 +53,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
             </div>
             <div>
               <h3 className="text-sm font-bold text-white">Developer Identity</h3>
-              <p className="text-[11px] text-slate-400">Nexora Workspace Profile</p>
+              <p className="text-[11px] text-slate-400">Nixora Workspace Profile</p>
             </div>
           </div>
           <button
